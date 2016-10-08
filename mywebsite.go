@@ -9,45 +9,43 @@ import (
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/user"
 )
-
+var returnUrl = "/"
 type values struct {
 	Name string
-	Count    uint
 }
-var returnUrl = "/"
+
+func init() {
+	//setup router
+    router := httprouter.New()
+    router.GET("/", index)
+    router.GET("/hello/:name", hello)
+	router.GET("/welcome", welcome)
+	
+	log.Println("")
+	log.Println("Starting Server")
+	
+	fs := http.FileServer(http.Dir("static_resources"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.Handle("/", router)
+	
+	log.Println("Server Started")
+}
+
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
     t, _ := template.ParseFiles("index.html")
-	
-	vals := values{"Dakota Ewigman", 10}
+	vals := values{"Dakota Ewigman"}
     t.Execute(w, vals)
 }
 
 func hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
 }
-
-func init() {
-	fs := http.FileServer(http.Dir("static_resources"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	
-    router := httprouter.New()
-    router.GET("/", index)
-    router.GET("/hello/:name", hello)
-	log.Println("")
-	log.Println("starting")
-	log.Println("")
-	
-	http.Handle("/", router)
-	http.HandleFunc("/welcome", welcome)
-}
-func welcome(w http.ResponseWriter, r *http.Request) {
+func welcome(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
 	ctx := appengine.NewContext(r)
 	u := user.Current(ctx)
-	log.Println("")
-	log.Println(u)
+	
 	if u == nil {
 			url, _ := user.LoginURL(ctx, returnUrl)
 			fmt.Fprintf(w, `<a href="%s">Sign in or register</a>`, url)
