@@ -17,5 +17,4 @@ cp sample.app.yaml app.yaml
 sed -i -e 's/^application:.*$/application: '"$appName"'/g' app.yaml
 sed -i -e 's/^version:.*$/version: '"$appVersion"'/g' app.yaml
 
-echo 'app.yaml is:'
 cat app.yaml
