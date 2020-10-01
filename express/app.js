@@ -26,7 +26,9 @@ app.set('view engine', 'html');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+// TODO enclude secret
+app.use(cookieParser('secret'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
