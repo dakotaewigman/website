@@ -1,3 +1,5 @@
 *~
 *.pyc
 app.yaml
+node_modules
+dist
