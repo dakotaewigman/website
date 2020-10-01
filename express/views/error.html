@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title><%- title %></title>
+    <title><%- model.title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css'" />
   </head>
   <body>
-    <h1><%- message %></h1>
-    <h2><%- error.status %></h2>
-    <pre><%= error.stack %></pre>
+    <h1><%- model.message %></h1>
+    <h2><%- model.error.status %></h2>
+    <pre><%= model.error.stack %></pre>
   </body>
 </html>

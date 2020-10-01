@@ -9,6 +9,13 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+app.use(function(request, response, next) {
+  if (process.env.NODE_ENV === 'production' && !request.secure) {
+     return response.redirect("https://" + request.headers.host + request.url);
+  }
+  next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -31,11 +38,14 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  console.info(res.locals.title);
   // set locals, only providing error in development
-  res.locals.title = 'Error';
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  const model = {
+    title: 'Error',
+    message: err.message,
+    error: req.app.get('env') === 'development' ? err : {}
+  };
+  res.locals = { model };
 
   // render the error page
   res.status(err.status || 500);
