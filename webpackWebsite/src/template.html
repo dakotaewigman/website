@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Dakota's Website</title>
+  </head>
+  <body>
+    <div id="app-container"></div>
+    <script>
+      function ready(callbackFunc) {
+        if (document.readyState !== 'loading') {
+          // Document is already ready, call the callback directly
+          callbackFunc();
+        } else if (document.addEventListener) {
+          // All modern browsers to register DOMContentLoaded
+          document.addEventListener('DOMContentLoaded', callbackFunc);
+        } else {
+          // Old IE browsers
+          document.attachEvent('onreadystatechange', function() {
+            if (document.readyState === 'complete') {
+                callbackFunc();
+            }
+          });
+        }
+      }
+
+      ready(function() {
+        dakotaEwigmanWebsite();
+      });
+    </script>
+  </body>
+</html>
